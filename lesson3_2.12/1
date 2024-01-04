@@ -1,1 +1,72 @@
+#После получения исходного файла с данными, выполните задание:
+#Отберите строки датасета с Income больше 30 000 — используйте filter.
+> inc_2 <- filter(Датасет_2, Income > 30000)
+> inc_2
+# A tibble: 1,846 × 24
+      Id Year_Birth Education  Marital_Status Income Kidhome
+   <dbl>      <dbl> <chr>      <chr>           <dbl>   <dbl>
+ 1  1826       1970 Graduation Divorced        84835       0
+ 2     1       1961 Graduation Single          57091       0
+ 3 10476       1958 Graduation Married         67267       0
+ 4  1386       1967 Graduation Together        32474       1
+ 5  7348       1958 PhD        Single          71691       0
+ 6  4073       1954 2n Cycle   Married         63564       0
+ 7  1991       1967 Graduation Together        44931       0
+ 8  4047       1954 PhD        Married         65324       0
+ 9  9477       1954 PhD        Married         65324       0
+10  2079       1947 2n Cycle   Married         81044       0
 
+#Оставьте в датасете только следующие столбцы: Id, Year_Birth, Education, Marital_Status, Income, Response — используйте select.
+
+> Датасет_2_1 <- select(Датасет_2, Id, Year_Birth, Education, Marital_Status, Income, Response)
+> Датасет_2_1 
+# A tibble: 2,240 × 6
+      Id Year_Birth Education  Marital_Status Income Response
+   <dbl>      <dbl> <chr>      <chr>           <dbl>    <dbl>
+ 1  1826       1970 Graduation Divorced        84835        1
+ 2     1       1961 Graduation Single          57091        1
+ 3 10476       1958 Graduation Married         67267        0
+ 4  1386       1967 Graduation Together        32474        0
+ 5  5371       1989 Graduation Single          21474        1
+ 6  7348       1958 PhD        Single          71691        1
+ 7  4073       1954 2n Cycle   Married         63564        1
+ 8  1991       1967 Graduation Together        44931        0
+ 9  4047       1954 PhD        Married         65324        0
+10  9477       1954 PhD        Married         65324        0
+
+#Создайте новые столбцы: Age (возраст на момент 2023 года) и Rich_flag (который принимает True, если Income больше 80 000) — используйте mutate.
+Датасет_2_5 <- Датасет_2 %>% 
+mutate(Age = (2023 - Year_Birth), Rich_flag  = ifelse(Income > 80000, TRUE, FALSE))
+Датасет_2_5
+select(Датасет_2_5, Age, Rich_flag )
+> select(Датасет_2_5, Age, Rich_flag )
+# A tibble: 2,240 × 2
+     Age Rich_flag
+   <dbl> <lgl>    
+ 1    53 TRUE     
+ 2    62 FALSE    
+ 3    65 FALSE    
+ 4    56 FALSE    
+ 5    34 FALSE    
+ 6    65 FALSE    
+ 7    69 FALSE    
+ 8    56 FALSE    
+ 9    69 FALSE    
+10    69 FALSE  
+
+#В отдельный датасет запишите средние значения по Income по каждому типу Education
+#— используйте group_by и summarize.
+
+> Датасет_2_2 <-Датасет_2%>% group_by(Education) %>% summarise(avg_income = mean(Income, na.rm = TRUE))
+> Датасет_2_2 
+# A tibble: 5 × 2
+  Education  avg_income
+  <chr>           <dbl>
+1 2n Cycle       47633.
+2 Basic          20306.
+3 Graduation     52720.
+4 Master         52918.
+5 PhD            56145.
+
+
+Присоедините созданный датасет к основному по полю Education — используйте join.
