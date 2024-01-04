@@ -13,4 +13,64 @@
 #а также общую статистику по датафрейму с помощью функций str и summary.
 
 summary(Датасет_1)
+
+      Rank           Name             Platform        
+ Min.   :    1   Length:16598       Length:16598      
+ 1st Qu.: 4151   Class :character   Class :character  
+ Median : 8300   Mode  :character   Mode  :character  
+ Mean   : 8301                                        
+ 3rd Qu.:12450                                        
+ Max.   :16600                                        
+     Year              Genre            Publisher        
+ Length:16598       Length:16598       Length:16598      
+ Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character  
+                                                         
+                                                         
+                                                         
+    NA_Sales          EU_Sales          JP_Sales       
+ Min.   : 0.0000   Min.   : 0.0000   Min.   : 0.00000  
+ 1st Qu.: 0.0000   1st Qu.: 0.0000   1st Qu.: 0.00000  
+ Median : 0.0800   Median : 0.0200   Median : 0.00000  
+ Mean   : 0.2647   Mean   : 0.1467   Mean   : 0.07778  
+ 3rd Qu.: 0.2400   3rd Qu.: 0.1100   3rd Qu.: 0.04000  
+ Max.   :41.4900   Max.   :29.0200   Max.   :10.22000  
+  Other_Sales        Global_Sales    
+ Min.   : 0.00000   Min.   : 0.0100  
+ 1st Qu.: 0.00000   1st Qu.: 0.0600  
+ Median : 0.01000   Median : 0.1700  
+ Mean   : 0.04806   Mean   : 0.5374  
+ 3rd Qu.: 0.04000   3rd Qu.: 0.4700  
+ Max.   :10.57000   Max.   :82.7400 
+
+
 str(Датасет_1)
+
+
+spc_tbl_ [16,598 × 11] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Rank        : num [1:16598] 1 2 3 4 5 6 7 8 9 10 ...
+ $ Name        : chr [1:16598] "Wii Sports" "Super Mario Bros." "Mario Kart Wii" "Wii Sports Resort" ...
+ $ Platform    : chr [1:16598] "Wii" "NES" "Wii" "Wii" ...
+ $ Year        : chr [1:16598] "2006" "1985" "2008" "2009" ...
+ $ Genre       : chr [1:16598] "Sports" "Platform" "Racing" "Sports" ...
+ $ Publisher   : chr [1:16598] "Nintendo" "Nintendo" "Nintendo" "Nintendo" ...
+ $ NA_Sales    : num [1:16598] 41.5 29.1 15.8 15.8 11.3 ...
+ $ EU_Sales    : num [1:16598] 29.02 3.58 12.88 11.01 8.89 ...
+ $ JP_Sales    : num [1:16598] 3.77 6.81 3.79 3.28 10.22 ...
+ $ Other_Sales : num [1:16598] 8.46 0.77 3.31 2.96 1 0.58 2.9 2.85 2.26 0.47 ...
+ $ Global_Sales: num [1:16598] 82.7 40.2 35.8 33 31.4 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Rank = col_double(),
+  ..   Name = col_character(),
+  ..   Platform = col_character(),
+  ..   Year = col_character(),
+  ..   Genre = col_character(),
+  ..   Publisher = col_character(),
+  ..   NA_Sales = col_double(),
+  ..   EU_Sales = col_double(),
+  ..   JP_Sales = col_double(),
+  ..   Other_Sales = col_double(),
+  ..   Global_Sales = col_double()
+  .. )
+ - attr(*, "problems")=<externalptr> 
