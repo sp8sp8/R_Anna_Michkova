@@ -61,6 +61,13 @@ ggplot(total_df.complete )+geom_bar(mapping = aes(y=Education, fill = Rich_flag)
 #(в нашем случае — людей, рождённых в конкретный год). Какие выводы вы можете сделать с помощью этой визуализации? 
 #Напишите их в комментариях в коде.
 
+total_df
+total_df.complete = total_df[complete.cases(total_df), ] 
+ggplot(total_df.complete)+geom_freqpoly(mapping = aes(x = Year_Birth, color = 'red'), binwidth = 1)
+
+# Основной сегмент - люди с 1950 по 1980 г.р., преимущественно с 1970 по 1980.
+
+
 
 
 
