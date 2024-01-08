@@ -35,6 +35,22 @@ map
 
 #5.С помощью библиотеки DT выведите всю информацию из анализируемого датасета в таблицу.
 
+library(DT) 
+library(htmltools)
+data(total_df)
+table <- datatable(
+  total_df,
+  caption = tags$caption(
+    style = 'caption-side: bottom; text-align: center;')
+)
+table 
 
 #6.С помощью библиотеки rpivotTable выведите информацию из анализируемого датасета в сводную таблицу, 
 #где по умолчанию в rows (строках) укажите «Education», в cols (столбцах) — «Marital_Status».
+
+
+library(rpivotTable)
+data(total_df)
+table2<-rpivotTable(total_df, row = 'Education', col = 'Marital_Status')
+table2
+
