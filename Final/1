@@ -1,1 +1,36 @@
+library(dplyr)
+library(ggplot2)
 
+#объединяем дата-сеты
+df1 = merge(x=transaction_data,y=product,by="PRODUCT_ID",all=TRUE)
+clean_df1<- df1
+clean_df1[is.na(clean_df1)]<-0
+
+df2 = merge(clean_df1,y=hh_demographic,by="household_key",all=TRUE)
+clean_df2<- df2
+clean_df2[is.na(clean_df2)]<-0
+
+df3 = merge(x=clean_df2,y=coupon_redempt,by="household_key",all=TRUE)
+clean_df3<- df3
+clean_df3[is.na(clean_df3)]<-0
+View(clean_df3)
+
+#Убрали нулевые значения 
+
+clean_df3 <- clean_df3 [apply(clean_df3 !=0, 1, all),]
+clean_df3
+time_df<-select(clean_df3, TRANS_TIME)
+View(time_df)
+
+time_df 
+
+#График частоты покупок
+time_df_2_5 <- time_df  %>% 
+  mutate(case_time = ifelse(TRANS_TIME > 1400, "После обеда", "До обеда"))
+time_df_2_5
+select(time_df_2_5, case_time)
+time_df_2_5%>% group_by(case_time) 
+View(time_df_2_5)
+
+ggplot(time_df_2_5, aes (x=case_time)) +
+  geom_bar()
