@@ -34,3 +34,4 @@ View(time_df_2_5)
 
 ggplot(time_df_2_5, aes (x=case_time)) +
   geom_bar()
+
