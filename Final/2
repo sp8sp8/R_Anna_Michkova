@@ -1,0 +1,85 @@
+#  К сожалению, из-за технических проблем не подключался ряд библиотек, и некоторые вычисления, в т.ч. сводные таблицы сделать не получилось. 
+# Также датасет был очень большой, и мощности компьютера не хватало, чтобы его обрабатывать, зависания и долгая обработка запросов не позволили
+#создать ряд кода для анализа, в т.ч. выручки магазинов, а также вхождение в топ-20 магазинов топ-10 категорий товаров. 
+
+ссылка на презентацию с созданием дашборда на основе анализа данных в R 
+
+
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+
+#объединяем дата-сеты
+df1 = merge(x=transaction_data.csv,y=product,by="PRODUCT_ID",all=TRUE)
+clean_df1<- df1
+clean_df1[is.na(clean_df1)]<-0
+View(df1)
+
+df2 = merge(clean_df1,y=hh_demographic,by="household_key",all=TRUE)
+clean_df2<- df2
+clean_df2[is.na(clean_df2)]<-0
+
+df3 = merge(x=clean_df2,y=coupon_redempt,by="household_key",all=TRUE)
+clean_df3<- df3
+clean_df3[is.na(clean_df3)]<-0
+View(clean_df3)
+
+#определяем 10ку лучших магазинов
+df4_store<-clean_df3 % > % group_by(STORE_ID) %>% summarise(sum_group_st = sum(SALES_VALUE, na.rm = TRUE))
+View(df4_store)
+df4_store10<-head(df4_store[order(df4_store$sum_group_st,decreasing=TRUE),], n=10)
+df4_store_10<-df4_store10[0:10, ]
+View(df4_store_10)
+
+#Убрали нулевые значения
+
+clean_df3 <- clean_df3 [apply(clean_df3 !=0, 1, all),]
+clean_df3
+time_df<-select(clean_df3, TRANS_TIME)
+View(time_df)
+
+#Отбросили минуты, оставили только часы
+time_df$TRANS_TIME <- substr(time_df$TRANS_TIME, 1, 2)
+View(time_df)
+#Построили график по часам, чтобы определить пиковые значения,
+#увидели основные возрастные категории с временем активности
+ggplot(time_df, aes (y=time_df$TRANS_TIME, fill=clean_df3$AGE_DESC)) +
+  geom_bar()
+#Определили возрастные категории в разрезе с доходом
+ggplot(time_df, aes (x=clean_df3$AGE_DESC, fill=clean_df3$INCOME_DESC)) +
+  geom_bar()
+
+#сгруппируем товары по типу и количеству, т.к. очень много однотипных товаров
+df3_group_product<-df3%>% group_by(COMMODITY_DESC) %>% summarise(sum_group = sum(QUANTITY, na.rm = TRUE))
+df3_group_product
+
+#сгруппируем товары по типу и выручке, т.к. очень много однотипных товаров
+df3_rev_product<-df3%>% group_by(COMMODITY_DESC) %>% summarise(sum_group_rev = sum(SALES_VALUE, na.rm = TRUE))
+df3_rev_product
+
+
+
+#объединили в единую таблицу сгруппированные категории
+new_cat_df= df3_rev_product %>% left_join(df3_group_product,by="COMMODITY_DESC")
+View(new_cat_df)
+
+new_cat_df1 <-new_cat_df[- grep("COUPON/MISC ITEMS", new_cat_df$COMMODITY_DESC),]
+new_cat_df1
+
+#определяем топ-10 групп товаров по выручке
+new_cat_10df<-head(new_cat_df1[order(new_cat_df1$sum_group_rev,decreasing=TRUE),], n=10)
+top10_df_rev<-new_cat_10df[0:10, ]
+View(top10_df_rev)
+
+
+#визуализация топ-10 категорий
+ggplot(top10_df_rev, aes(y = COMMODITY_DESC, x = sum_group_rev, fill = sum_group)) +
+  geom_bar(stat = "identity")
+
+df3_store <- select(clean_df3, COMMODITY_DESC, STORE_ID)
+df3_store
+
+
+total_df3= top10_df_rev %>% right_join(df3_store,by="COMMODITY_DESC")
+View(total_df3)
+
